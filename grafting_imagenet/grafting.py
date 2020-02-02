@@ -164,8 +164,6 @@ def outside(net,epoch):
     for i,(key,u) in enumerate(net.state_dict().items()):
         if 'conv' in key:
             w=round(0.4*(np.arctan(500*((float(entropy(u).cpu())-float(entropy(checkpoint[key]).cpu())))))/np.pi+1/2,2)
-        else:
-            w=0.7
         model[key]=u*w+checkpoint[key]*(1-w)
     net.load_state_dict(model)
 def train(train_loader, model, criterion, optimizer, epoch, args):
