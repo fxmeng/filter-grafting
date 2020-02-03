@@ -1,30 +1,103 @@
+from __future__ import print_function
 import torch
+import torch.nn as nn
+import torch.optim as optim
+import torch.nn.functional as F
+import torch.backends.cudnn as cudnn
+import torchvision
+import torchvision.transforms as transforms
 import os
-import numpy as np
 import collections
 import time
-def noise(args,net,epoch):
-    model=collections.OrderedDict()
-    for i,(key,u) in enumerate(net.state_dict().items()):
-        if 'conv' in key:
-            v=torch.norm(u,p=1,dim=(1,2,3))<args.threshold
-            for j in range(len(v)):
-                if v[j]:
-                    u[j]+=torch.randn_like(u[j]).to(args.device)*0.975**epoch
-        model[key]=u
-    net.load_state_dict(model)
-def inside(args,net,epoch):
-    model=collections.OrderedDict()
-    for i,(key,u) in enumerate(net.state_dict().items()):
-        if 'conv' in key:
-            v=torch.argsort(torch.norm(u,p=1,dim=(1,2,3)))
-            for j in range(len(v)):
-                if torch.norm(u[v[j]],p=1)<args.threshold:
-                    u[v[j]]+=u[v[len(v)-j-1]]
-                else:
-                    break
-        model[key]=u
-    net.load_state_dict(model)
+import argparse
+import sys
+import pickle
+import numpy as np
+import time
+from models.resnet_cifar import *
+from models.resnet_imagenet import *
+from models.wrn import Network
+from models.mobilenetv2 import MobileNetV2
+from models.densenet import DenseNet121
+from models.resnext import ResNeXt29_8x64d
+parser = argparse.ArgumentParser(description='PyTorch Grafting Training')
+#basic setting
+parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
+parser.add_argument('--batch-size', default=128, type=int)
+parser.add_argument('--epochs', default=200, type=int)
+parser.add_argument('--r', default=None, type = int)
+parser.add_argument('--device', default='cuda', type = str)
+parser.add_argument('--s', default='1', type = str)
+parser.add_argument('--model', default='resnet32', type = str)
+parser.add_argument('--cifar', default=10, type = int)
+parser.add_argument('--print_frequence', default=1000, type = int)
+#Grafting setting
+parser.add_argument('--a', default=0.4, type = float)
+parser.add_argument('--c', default=500, type = int)
+parser.add_argument('--num', default=100, type = int)
+parser.add_argument('--i', default=1, type = int)
+#Increase models diversity
+parser.add_argument('--cos', action="store_true", default=False)
+parser.add_argument('--difflr', action="store_true", default=False)
+args = parser.parse_args()
+print(args)
+print('Session:%s\tModel:%d\tPID:%d'%(args.s,args.i,os.getpid()))
+args.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+if args.model=='resnet18':
+    net = ResNet18(args.cifar).to(args.device)
+elif args.model=='resnet34':
+    net = ResNet34(args.cifar).to(args.device)
+elif args.model=='resnet50':
+    net = ResNet50(args.cifar).to(args.device)
+elif args.model=='resnet101':
+    net = ResNet101(args.cifar).to(args.device)
+elif args.model=='resnet20':
+    net = resnet20(args.cifar).to(args.device)
+elif args.model=='resnet32':
+    net = resnet32(args.cifar).to(args.device)
+elif args.model=='resnet56':
+    net = resnet56(args.cifar).to(args.device)
+elif args.model=='resnet110':
+    net = resnet110(args.cifar).to(args.device)
+elif args.model=='mobilenetv2':
+    net = MobileNetV2(args.cifar).to(args.device)
+elif args.model=='densenet':
+    net = DenseNet121(args.cifar).to(args.device)
+elif args.model=='wrn':
+    net = Network(args.cifar).to(args.device)
+elif args.model=='resnext':
+    net = ResNeXt29_8x64d(args.cifar).to(args.device)
+start_epoch = 0 
+accuracy=[] 
+if args.difflr:
+    loc=(1+np.cos(np.pi*((args.num-args.i)/args.num)))/2
+else:
+    loc=1
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.SGD(net.parameters(), lr=args.lr*loc, momentum=0.9, weight_decay=5e-4)
+# Data
+transform_train = transforms.Compose([
+    transforms.RandomCrop(32, padding=4),
+    transforms.RandomHorizontalFlip(),
+    transforms.ToTensor(),
+    transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+])
+transform_test = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+])
+if args.cifar==10:
+    trainset = torchvision.datasets.CIFAR10(root='../data', train=True, download=True, transform=transform_train)
+    testset = torchvision.datasets.CIFAR10(root='../data', train=False, download=True, transform=transform_test)
+elif args.cifar==100:
+    trainset = torchvision.datasets.CIFAR100(root='../data', train=True, download=True, transform=transform_train)
+    testset = torchvision.datasets.CIFAR100(root='../data', train=False, download=True, transform=transform_test)
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=128, shuffle=True, num_workers=2)
+testloader = torch.utils.data.DataLoader(testset, batch_size=100, shuffle=False, num_workers=2)
+if args.cos==True:
+    lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer,args.epochs*trainloader.__len__())
+else:
+    lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer,step_size=60,gamma=0.1)
 def entropy(x,n=10):
     x=x.reshape(-1)
     scale=(x.max()-x.min())/n
@@ -34,68 +107,68 @@ def entropy(x,n=10):
         if p!=0:
             entropy-=p*torch.log(p)
     return float(entropy.cpu())
-def entropy_filter(x,n=10):
-    entropy=0
-    for filter in x.reshape(x.shape[0],-1):
-        scale=(filter.max()-filter.min())/n
-        for i in range(n):
-            p=torch.sum((filter>=filter.min()+i*scale)*(filter<filter.min()+(i+1)*scale),dtype=torch.float)/len(filter)
-            if p!=0:
-                entropy-=p*torch.log(p)
-        return float(entropy.cpu())
-def outsideFC(args,net,epoch):
-    for i in range(args.i+1,args.i+args.num):
-        while not os.access(path='./checkpoint/%s/ckpt%d_%d.t7'%(args.s,i%args.num,epoch), mode=os.R_OK):
-            time.sleep(10)
-    checkpoint=[]
-    for i in range(args.i+1,args.i+args.num):
+def grafting(net,epoch):
+    while True:
         try:
-            checkpoint.append(torch.load('./checkpoint/%s/ckpt%d_%d.t7'%(args.s,i%args.num,epoch))['net']) 
+            checkpoint = torch.load('%s/ckpt%d_%d.t7'%(args.s,args.i-1,epoch))['net']
+            break
         except:
-            print('try again')
             time.sleep(10)
-            checkpoint.append(torch.load('./checkpoint/%s/ckpt%d_%d.t7'%(args.s,i%args.num,epoch))['net']) 
-    model=collections.OrderedDict()
-    for key,u in net.state_dict().items():
-        model[key]=0.25*(u+checkpoint[0][key]+checkpoint[1][key]+checkpoint[2][key])
-    net.load_state_dict(model)
-def outside(args,net,epoch):
-    while not os.access(path='./checkpoint/%s/ckpt%d_%d.t7'%(args.s,args.i-1,epoch), mode=os.R_OK):
-        time.sleep(10)
-    try:
-        checkpoint = torch.load('./checkpoint/%s/ckpt%d_%d.t7'%(args.s,args.i-1,epoch))['net']
-    except:
-        print('try again')
-        time.sleep(10)
-        checkpoint = torch.load('./checkpoint/%s/ckpt%d_%d.t7'%(args.s,args.i-1,epoch))['net']
     model=collections.OrderedDict()
     for i,(key,u) in enumerate(net.state_dict().items()):
         if 'conv' in key:
-            if args.sh=='entropy':
-                w=round(0.4/np.pi*np.arctan(args.w*(entropy(u)-entropy(checkpoint[key])))+0.5,2)
-            elif args.sh=='norm':
-                w=round(0.4/np.pi*np.arctan(args.w*(float(torch.norm(u,p=1).cpu())-float(torch.norm(checkpoint[key],p=1).cpu())))+0.5,2)
-            print(w,end=',')
+            w=round(args.a/np.pi*np.arctan(args.c*(entropy(u)-entropy(checkpoint[key])))+0.5,2)
         model[key]=u*w+checkpoint[key]*(1-w)
     net.load_state_dict(model)
-def grafting_filter(args,net,epoch):
-    checkpoint=[]
-    for i in range(args.i+1,args.i+args.num):
-        while not os.access(path='./checkpoint/%s/ckpt%d_%d.t7'%(args.s,i%args.num,epoch), mode=os.R_OK):
-            print('wait ckpt%d_%d.t7'%(i%args.num,epoch),end=',')
-            time.sleep(10)
-    for i in range(args.i+1,args.i+args.num):
-        try:
-            checkpoint.append(torch.load('./checkpoint/%s/ckpt%d_%d.t7'%(args.s,i%args.num,epoch))['net'])
-        except:
-            time.sleep(10)
-            checkpoint.append(torch.load('./checkpoint/%s/ckpt%d_%d.t7'%(args.s,i%args.num,epoch))['net'])
-    model=collections.OrderedDict()
-    for i,(key,u) in enumerate(net.state_dict().items()):
-        if 'conv' in key:
-            for j,v in enumerate(u):
-                if entropy(v)<args.threshold:
-                    branches_index=np.argmax([entropy(checkpoint[k][key][j]) for k in range(len(checkpoint))])
-                    u[j]+=checkpoint[branches_index][key][j]
-        model[key]=u
-    net.load_state_dict(model)
+def test(epoch):
+    global accuracy
+    net.eval()
+    test_loss = 0
+    correct = 0
+    total = 0
+    with torch.no_grad():
+        for batch_idx, (inputs, targets) in enumerate(testloader):
+            inputs, targets = inputs.to(args.device), targets.to(args.device)
+            outputs = net(inputs)
+            loss = criterion(outputs, targets)
+            test_loss += loss.item()
+            _, predicted = outputs.max(1)
+            total += targets.size(0)
+            correct += predicted.eq(targets).sum().item()
+    acc = 100.*correct/total
+    accuracy.append(acc) 
+    print('Network:%d    epoch:%d    accuracy:%.3f    best:%.3f'%(args.i,epoch,acc,np.max(acc)))
+def train(epoch):
+    net.train()
+    train_loss = 0
+    correct = 0
+    total = 0
+    for batch_idx, (inputs, targets) in enumerate(trainloader):
+        inputs, targets = inputs.to(args.device), targets.to(args.device)
+        optimizer.zero_grad()
+        outputs = net(inputs)
+        loss = criterion(outputs, targets)
+        loss.backward()
+        optimizer.step()
+        train_loss += loss.item()
+        _, predicted = outputs.max(1)
+        total += targets.size(0)
+        correct += predicted.eq(targets).sum().item()
+        if batch_idx%args.print_frequence==args.print_frequence-1 or args.print_frequence==trainloader.__len__()-1:
+            print('Loss: %.3f | Acc: %.3f%% (%d/%d)'% (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
+        if args.cos==True:
+            lr_scheduler.step()
+    if args.cos==False:
+        lr_scheduler.step()
+
+if __name__=='__main__':
+    for epoch in range(start_epoch,args.epochs): 
+        train(epoch)
+        test(epoch)
+        state = {
+        'net': net.state_dict(),
+        'acc': accuracy
+        }
+        torch.save(state,'%s/ckpt%d_%d.t7'%(args.s,args.i%args.num,epoch))
+        grafting(net,epoch)
+    torch.save(accuracy,'%s/accuracy%d.t7'%(args.s,args.i))
