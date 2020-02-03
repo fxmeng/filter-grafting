@@ -65,7 +65,8 @@ parser.add_argument('--num', default=2, type = int,
                     help='the num of all program')
 parser.add_argument('--i', default=1, type = int, 
                     help='the i-th program')
-parser.add_argument('--w', default=0.3, type = float)
+parser.add_argument('--a', default=0.4, type = float, help='hyperparameter a for calculate weighted average coefficient')
+parser.add_argument('--c', default=500, type = int, help='hyper parameter c for calculate weighted average coefficient')
 best_acc1 = 0
 def main_worker(gpu, args):
     global best_acc1
