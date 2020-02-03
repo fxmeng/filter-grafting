@@ -2,6 +2,7 @@
 I'm playing with PyTorch on the CIFAR and ImageNet dataset
 ## Prerequisites
 Python 3.6+
+
 PyTorch 1.0+
 
 ## CIFAR dataset
