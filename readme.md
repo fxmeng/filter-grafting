@@ -24,15 +24,15 @@ for more running detail see ./grafting_cifar/cifar.md
 model | method | CIFAR-10 | CIFAR-100
 ---- | ---- | ---- | ----
 ResNet32 | baseline | 92.83 | 69.8 
-| grafting | 93.94 | 71.28 
+| | grafting | 93.94 | 71.28 
 ResNet56 | baseline| 93.50| 71.55
-| grafting | 94.73 | 72.83 
+| | grafting | 94.73 | 72.83 
 ResNet110| baseline| 93.81| 73.21
-| grafting | 94.96 | 75.27 
+| | grafting | 94.96 | 75.27 
 MobileNetV2| baseline| 92.42| 71.44
-| grafting | 94.20 | 74.15 
+| | grafting | 94.20 | 74.15 
 WRN8-10| baseline | 95.75 | 80.65 
-| grafting | 96.40 | 81.62 
+| | grafting | 96.40 | 81.62 
 
 ## ImageNet dataset
 
