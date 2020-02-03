@@ -1,5 +1,9 @@
 # Implementation of filter grafting
 I'm playing with PyTorch on the CIFAR and ImageNet dataset
+
+For CIFAR, our code is based on https://github.com/kuangliu/pytorch-cifar.git
+
+For ImageNet, our code is based on https://github.com/pytorch/examples/tree/master/imagenet 
 ## Prerequisites
 Python 3.6+
 
