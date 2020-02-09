@@ -49,16 +49,16 @@ or
 #### Two models grafting
 
 ```
-CUDA_VISIBLE_DEVICES=0 nohup python grafting.py --s checkpoint/grafting_cifar10_resnet32\ --cifar 10  --model resnet32 --num 2 --i 1 >checkpoint/grafting_cifar10_resnet32/1.log &
-CUDA_VISIBLE_DEVICES=1 nohup python grafting.py --s checkpoint/grafting_cifar10_resnet32\ --cifar 10  --model resnet32 --num 2 --i 2  >checkpoint/grafting_cifar10_resnet32/2.log &
+CUDA_VISIBLE_DEVICES=0 nohup python grafting.py --s checkpoint/grafting_cifar10_resnet32 --cifar 10  --model resnet32 --num 2 --i 1 >checkpoint/grafting_cifar10_resnet32/1.log &
+CUDA_VISIBLE_DEVICES=1 nohup python grafting.py --s checkpoint/grafting_cifar10_resnet32 --cifar 10  --model resnet32 --num 2 --i 2  >checkpoint/grafting_cifar10_resnet32/2.log &
 ```
 
 #### Three models grafting
 
 ```
-CUDA_VISIBLE_DEVICES=0 nohup python grafting.py --s checkpoint/grafting_cifar10_resnet32\ --cifar 10  --model resnet32 --num 3 --i 1 >checkpoint/grafting_cifar10_resnet32/1.log &
-CUDA_VISIBLE_DEVICES=1 nohup python grafting.py --s checkpoint/grafting_cifar10_resnet32\ --cifar 10  --model resnet32 --num 3 --i 2 >checkpoint/grafting_cifar10_resnet32/2.log &
-CUDA_VISIBLE_DEVICES=2 nohup python grafting.py --s checkpoint/grafting_cifar10_resnet32\ --cifar 10  --model resnet32 --num 3 --i 3 >checkpoint/grafting_cifar10_resnet32/3.log &
+CUDA_VISIBLE_DEVICES=0 nohup python grafting.py --s checkpoint/grafting_cifar10_resnet32 --cifar 10  --model resnet32 --num 3 --i 1 >checkpoint/grafting_cifar10_resnet32/1.log &
+CUDA_VISIBLE_DEVICES=1 nohup python grafting.py --s checkpoint/grafting_cifar10_resnet32 --cifar 10  --model resnet32 --num 3 --i 2 >checkpoint/grafting_cifar10_resnet32/2.log &
+CUDA_VISIBLE_DEVICES=2 nohup python grafting.py --s checkpoint/grafting_cifar10_resnet32 --cifar 10  --model resnet32 --num 3 --i 3 >checkpoint/grafting_cifar10_resnet32/3.log &
 ```
 
 
@@ -123,8 +123,8 @@ or
 #### Two models grafting
 
 ```
-CUDA_VISIBLE_DEVICES=0 nohup python grafting.py --arch resnet18 --s \ grafting_imagenet_resnet18 --num 2 --i 1 >checkpoint/grafting_imagenet_resnet18/1.out &
-CUDA_VISIBLE_DEVICES=1 nohup python grafting.py --arch resnet18 --s \ grafting_imagenet_resnet18 --num 2 --i 2 >checkpoint/grafting_imagenet_resnet18/2.out &
+CUDA_VISIBLE_DEVICES=0 nohup python grafting.py --arch resnet18 --s grafting_imagenet_resnet18 --num 2 --i 1 >checkpoint/grafting_imagenet_resnet18/1.out &
+CUDA_VISIBLE_DEVICES=1 nohup python grafting.py --arch resnet18 --s grafting_imagenet_resnet18 --num 2 --i 2 >checkpoint/grafting_imagenet_resnet18/2.out &
 ```
 
 
@@ -132,9 +132,9 @@ CUDA_VISIBLE_DEVICES=1 nohup python grafting.py --arch resnet18 --s \ grafting_i
 #### Three models grafting
 
 ```
-CUDA_VISIBLE_DEVICES=0 nohup python grafting.py --arch resnet18 --s \ grafting_imagenet_resnet18 --num 3 --i 1 >checkpoint/grafting_imagenet_resnet18/1.out &
-CUDA_VISIBLE_DEVICES=1 nohup python grafting.py --arch resnet18 --s \ grafting_imagenet_resnet18 --num 3 --i 2 >checkpoint/grafting_imagenet_resnet18/2.out &
-CUDA_VISIBLE_DEVICES=2 nohup python grafting.py --arch resnet18 --s \ grafting_imagenet_resnet18 --num 3 --i 3 >checkpoint/grafting_imagenet_resnet18/3.out &
+CUDA_VISIBLE_DEVICES=0 nohup python grafting.py --arch resnet18 --s grafting_imagenet_resnet18 --num 3 --i 1 >checkpoint/grafting_imagenet_resnet18/1.out &
+CUDA_VISIBLE_DEVICES=1 nohup python grafting.py --arch resnet18 --s grafting_imagenet_resnet18 --num 3 --i 2 >checkpoint/grafting_imagenet_resnet18/2.out &
+CUDA_VISIBLE_DEVICES=2 nohup python grafting.py --arch resnet18 --s grafting_imagenet_resnet18 --num 3 --i 3 >checkpoint/grafting_imagenet_resnet18/3.out &
 ```
 
 
