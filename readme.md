@@ -1,5 +1,5 @@
 # Implementation of filter grafting
-This code is a PyTorch implementation of 'Filter Grafting for Deep Neural Networks' an anonymous submission by cvpr2020
+This code is a PyTorch implementation of the paper "Filter Grafting for Deep Neural Networks" submitted anonymously to cvpr2020.
 
 For CIFAR, our code is based on https://github.com/kuangliu/pytorch-cifar.git
 
