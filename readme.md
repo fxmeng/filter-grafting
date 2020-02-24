@@ -5,7 +5,7 @@ This is the PyTorch implementation of our CVPR 2020 paper "**Filter Grafting for
 
 Invalid filters limit the potential of DNNs since they are identified as having little effect on the network. While filter pruning removes these invalid filters for efficiency consideration, Filter Grafting **re-activates** them from an accuracy boosting perspective. The activation is processed by grafting external information (weights) into invalid filters. 
 
-![](picture/grafting.png)
+![](grafting.png)
 
 ## Prerequisites
 Python 3.6+
