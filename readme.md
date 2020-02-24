@@ -5,7 +5,7 @@ This is the PyTorch implementation of our CVPR 2020 paper "**Filter Grafting for
 
 Invalid filters limit the potential of DNNs since they are identified as having little effect on the network. While filter pruning removes these invalid filters for efficiency consideration, Filter Grafting **re-activates** them from an accuracy boosting perspective. The activation is processed by grafting external information (weights) into invalid filters. 
 
-![](D:\下载\grafting.png)
+![](picture/grafting.png)
 
 ## Prerequisites
 Python 3.6+
@@ -71,17 +71,17 @@ CUDA_VISIBLE_DEVICES=2 nohup python grafting.py --s checkpoint/grafting_cifar10_
 
 | model       | method          | cifar10   | cifar100  |
 | ----------- | --------------- | --------- | --------- |
-| ResNet32    | baseline        | 92.83     | 69.82     |
-|             | grafting(blr)   | 93.33     | 71.16     |
+|             | baseline        | 92.83     | 69.82     |
+| ResNet32    | grafting(blr)   | 93.33     | 71.16     |
 |             | grafting(coslr) | **93.94** | **71.28** |
-| ResNet56    | baseline        | 93.50     | 71.55     |
-|             | grafting(blr)   | 94.28     | **73.09** |
+|             | baseline        | 93.50     | 71.55     |
+| ResNet56    | grafting(blr)   | 94.28     | **73.09** |
 |             | grafting(coslr) | **94.73** | 72.83     |
-| ResNet110   | baseline        | 93.81     | 73.21     |
-|             | grafting(blr)   | 94.60     | 74.70     |
+|             | baseline        | 93.81     | 73.21     |
+| ResNet110   | grafting(blr)   | 94.60     | 74.70     |
 |             | grafting(coslr) | **94.96** | **75.27** |
-| MobileNetv2 | baseline        | 92.42     | 71.44     |
-|             | grafting(blr)   | 93.53     | 73.26     |
+|             | baseline        | 92.42     | 71.44     |
+| MobileNetv2 | grafting(blr)   | 93.53     | 73.26     |
 |             | grafting(coslr) | **94.20** | **74.15** |
 
 Grafting(blr) use the same lr scheduler with baseline that decay 0.1 at every 60 epochs, but set different initial learning rate to increase two models' diversity.
