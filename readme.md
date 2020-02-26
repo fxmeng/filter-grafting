@@ -1,4 +1,4 @@
-# Filter Grafting for Deep Neural Networks(CVPR 2020)
+# Filter Grafting for Deep Neural Networks
 ## Introduction
 
 This is the PyTorch implementation of our CVPR 2020 paper "[Filter Grafting for Deep Neural Networks](https://arxiv.org/abs/2001.05868)". 
