@@ -73,20 +73,20 @@ CUDA_VISIBLE_DEVICES=2 nohup python grafting.py --s checkpoint/grafting_cifar10_
 | ----------- | --------------- | --------- | --------- |
 |  ResNet32   | baseline        | 92.83     | 69.82     |
 |             | grafting(blr)   | 93.33     | 71.16     |
-|             | grafting(coslr) | **93.94** | **71.28** |
+|             | grafting(dlr)   | **93.94** | **71.28** |
 |  ResNet56   | baseline        | 93.50     | 71.55     |
 |             | grafting(blr)   | 94.28     | **73.09** |
-|             | grafting(coslr) | **94.73** | 72.83     |
+|             | grafting(dlr)   | **94.73** | 72.83     |
 | ResNet110   | baseline        | 93.81     | 73.21     |
 |             | grafting(blr)   | 94.60     | 74.70     |
-|             | grafting(coslr) | **94.96** | **75.27** |
+|             | grafting(dlr)   | **94.96** | **75.27** |
 | MobileNetv2 | baseline        | 92.42     | 71.44     |
 |             | grafting(blr)   | 93.53     | 73.26     |
-|             | grafting(coslr) | **94.20** | **74.15** |
+|             | grafting(dlr)   | **94.20** | **74.15** |
 
-Grafting(blr) use the same lr scheduler with baseline that decay 0.1 at every 60 epochs, but set different initial learning rate to increase two models' diversity.
+Grafting(blr) use the same lr scheduler with baseline that initial learning rate 0.1, and decay 0.1 at every 60 epochs.
 
-While grafting(coslr) use cosine annealing learning rate to make each batch of data have different importance to further increase the models' diversity.
+While grafting(dlr) set different initial learning rate to increase two models' diversity, and use cosine annealing learning rate to make each batch of data have different importance to further increase the diversity.
 
 | MobileNetV2       | CIFAR-10  | CIFAR-100 |
 | ----------------- | --------- | --------- |
