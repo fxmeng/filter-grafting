@@ -28,7 +28,6 @@ parser.add_argument('--s', default='1', type=str)
 parser.add_argument('--model', default='resnet32', type=str)
 parser.add_argument('--cifar', default=10, type=int)
 parser.add_argument('--print_frequence', default=1000, type=int)
-parser.add_argument('--cos', action="store_true", default=False)
 args = parser.parse_args()
 print(args)
 print('PID:%d' % (os.getpid()))
@@ -66,10 +65,7 @@ elif args.cifar == 100:
     testset = torchvision.datasets.CIFAR100(root='../data', train=False, download=True, transform=transform_test)
 trainloader = torch.utils.data.DataLoader(trainset, batch_size=128, shuffle=True, num_workers=2)
 testloader = torch.utils.data.DataLoader(testset, batch_size=100, shuffle=False, num_workers=2)
-if args.cos == True:
-    lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, args.epochs * trainloader.__len__())
-else:
-    lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=60, gamma=0.1)
+lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=60, gamma=0.1)
 
 
 def test(epoch):
@@ -117,9 +113,6 @@ def train(epoch):
         if batch_idx % args.print_frequence == args.print_frequence - 1 or args.print_frequence == trainloader.__len__() - 1:
             print('Loss: %.3f | Acc: %.3f%% (%d/%d)' % (
             train_loss / (batch_idx + 1), 100. * correct / total, correct, total))
-        if args.cos == True:
-            lr_scheduler.step()
-    if args.cos == False:
         lr_scheduler.step()
 
 
