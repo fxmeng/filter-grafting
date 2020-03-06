@@ -15,6 +15,7 @@ import pickle
 import numpy as np
 import time
 from models.resnet import *
+from models.resnet_leaky import *
 from models.mobilenetv2 import MobileNetV2
 
 parser = argparse.ArgumentParser(description='PyTorch Grafting Training')
@@ -39,6 +40,14 @@ elif args.model == 'resnet32':
 elif args.model == 'resnet56':
     net = resnet56(args.cifar).to(args.device)
 elif args.model == 'resnet110':
+    net = resnet110(args.cifar).to(args.device)
+elif args.model_leaky == 'resnet20':
+    net = resnet20(args.cifar).to(args.device)
+elif args.model_leaky == 'resnet32':
+    net = resnet32(args.cifar).to(args.device)
+elif args.model_leaky == 'resnet56':
+    net = resnet56(args.cifar).to(args.device)
+elif args.model_leaky == 'resnet110':
     net = resnet110(args.cifar).to(args.device)
 elif args.model == 'mobilenetv2':
     net = MobileNetV2(args.cifar).to(args.device)
