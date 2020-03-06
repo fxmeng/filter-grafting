@@ -73,6 +73,7 @@ if args.difflr:
     loc=(1+np.cos(np.pi*((args.num-args.i)/args.num)))/2
 else:
     loc=1
+print('The initial learning rate is:', args.lr * loc)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=args.lr*loc, momentum=0.9, weight_decay=5e-4)
 # Data
