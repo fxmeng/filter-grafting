@@ -189,6 +189,8 @@ CUDA_VISIBLE_DEVICES=2 nohup python grafting.py --arch resnet18 --s grafting_ima
 |          | grafting | **71.19** | **90.01** |
 | ResNet34 | baseline | 72.60     | 90.91     |
 |          | grafting | **74.58** | **92.05** |
+| ResNet50 | baseline | 75.92     | 92.81     |
+|          | grafting | **76.76** | **93.34** |
 
 ##  Citation
 
