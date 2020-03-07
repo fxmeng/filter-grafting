@@ -41,14 +41,14 @@ elif args.model == 'resnet56':
     net = resnet56(args.cifar).to(args.device)
 elif args.model == 'resnet110':
     net = resnet110(args.cifar).to(args.device)
-elif args.model_leaky == 'resnet20':
-    net = resnet20(args.cifar).to(args.device)
-elif args.model_leaky == 'resnet32':
-    net = resnet32(args.cifar).to(args.device)
-elif args.model_leaky == 'resnet56':
-    net = resnet56(args.cifar).to(args.device)
-elif args.model_leaky == 'resnet110':
-    net = resnet110(args.cifar).to(args.device)
+elif args.model == 'resnet20_leaky':
+    net = resnet20_leaky(args.cifar).to(args.device)
+elif args.model == 'resnet32_leaky':
+    net = resnet32_leaky(args.cifar).to(args.device)
+elif args.model == 'resnet56_leaky':
+    net = resnet56_leaky(args.cifar).to(args.device)
+elif args.model == 'resnet110_leaky':
+    net = resnet110_leaky(args.cifar).to(args.device)
 elif args.model == 'mobilenetv2':
     net = MobileNetV2(args.cifar).to(args.device)
 start_epoch = 0
