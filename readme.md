@@ -98,6 +98,15 @@ While grafting(dlr) set different initial learning rate to increase two models' 
 | 6 models grafting | **95.33** | **78.32** |
 | 8 models grafting | 95.20     | 77.76     |
 
+Comparison of the number of invalid filters
+| model       | threshold | baseline(invlid/total) | grafting(invlid/total) |
+| ----------- | --------- | ---------------------- | ---------------------- |
+| ResNet32    | 0.1       | 36/1136                | 14/1136                |
+|             | 0.01      | 35/1136                | 8/1136                 |
+| MobileNetV2 | 0.1       | 10929/17088            | 9903/17088             |
+|             | 0.01      | 9834/17088             | 8492/17088             |
+
+
 ## ImageNet dataset
 
 ### usage
