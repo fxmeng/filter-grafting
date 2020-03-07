@@ -106,7 +106,7 @@ Comparison of the number of invalid filters
 | MobileNetV2 | 0.1       | 10929/17088            | 9903/17088             |
 |             | 0.01      | 9834/17088             | 8492/17088             |
 
-The relu function will generates a large number of convolution kernels with a gradient of 0. Activation functions such as leaky relu/swish will not have kernels with gradients that are always 0. However, invalid filters are still generated that still do not contribute to the model. Grafting also works for models using leaky_relu and swish activation functions.
+The relu function will generates a large number of convolution kernels with a gradient of 0. Activation functions like leaky relu will not have kernels with gradients that are always 0. However, invalid filters are still generated that still do not contribute to the model. Grafting also works for models using leaky_relu activation functions.
 | model                  | method   | cifar10 | cifar100 |
 | ---------------------- | -------- | ------- | -------- |
 | resnet32_leaky_relu    | baseline | 93.28   | 70.04    |
