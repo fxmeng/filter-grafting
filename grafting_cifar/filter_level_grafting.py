@@ -79,7 +79,6 @@ def BN(epoch):
     bn = []
     for m1, m2 in zip(net.modules(), last_net.modules()):
         if isinstance(m1, nn.BatchNorm2d):
-            #bn.append(torch.atan(500 * (m1.weight.data - m2.weight.data)) / np.pi + 1 / 2)
             bn.append(m1.weight.data.abs() / (m1.weight.data.abs() + m2.weight.data.abs()))
             for j, w in enumerate(bn[-1]):
                 m1.weight.data = m1.weight.data.clone() * w + m2.weight.data.clone() * (1 - w)
