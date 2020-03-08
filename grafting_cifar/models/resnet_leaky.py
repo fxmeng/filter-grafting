@@ -34,7 +34,7 @@ import torch.nn.init as init
 
 from torch.autograd import Variable
 
-__all__ = ['ResNet', 'resnet20', 'resnet32', 'resnet44', 'resnet56', 'resnet110', 'resnet1202']
+__all__ = ['resnet20_leaky', 'resnet32_leaky', 'resnet44_leaky', 'resnet56_leaky', 'resnet110_leaky', 'resnet1202_leaky']
 
 def _weights_init(m):
     classname = m.__class__.__name__
