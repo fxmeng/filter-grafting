@@ -115,7 +115,9 @@ The relu function will generates a large number of convolution kernels with a gr
 |                        | grafting | 94.32   | 73.14    |
 | resnet32_leaky_relu    | baseline | 93.24   | 73.34    |
 |                        | grafting | 93.97   | 73.82    |
+
 Filter level grafting
+
 | model    |  method  |  level  |   cifar10    |  cifar100  |
 | ---------| -------- | ------- |   --------   |  --------  |
 | VGG16    | baseline |  ---    |    93.68     |   73.41    |
