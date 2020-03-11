@@ -123,7 +123,9 @@ Filter level grafting
 | VGG16    | baseline |  ---    |    93.68     |   73.41    |
 |          | grafting |  layer  |    94.02     |   74.28    |
 |          | grafting |  filter |  **94.26**   | **74.63**  |
+
 Discusse the two hyper-pameters A and c
+
 | MoblieNetV2 | A    | c    | cifar10 | cifar100 |
 | ----------- | ---- | ---- | ------- | -------- |
 | baseline    | ---  | ---  | 92.42   | 71.44    |
