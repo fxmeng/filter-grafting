@@ -122,7 +122,7 @@ def train(epoch):
         if batch_idx % args.print_frequence == args.print_frequence - 1 or args.print_frequence == trainloader.__len__() - 1:
             print('Loss: %.3f | Acc: %.3f%% (%d/%d)' % (
             train_loss / (batch_idx + 1), 100. * correct / total, correct, total))
-        lr_scheduler.step()
+    lr_scheduler.step()
 
 
 if __name__ == '__main__':
