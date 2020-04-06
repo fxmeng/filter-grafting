@@ -44,6 +44,7 @@ parser.add_argument('-b', '--batch-size', default=256, type=int,
                          'using Data Parallel or Distributed Data Parallel')
 parser.add_argument('--lr', '--learning-rate', default=0.1, type=float,
                     metavar='LR', help='initial learning rate', dest='lr')
+parser.add_argument('--cos', action="store_true", default=False)
 parser.add_argument('--momentum', default=0.9, type=float, metavar='M',
                     help='momentum')
 parser.add_argument('--wd', '--weight-decay', default=1e-4, type=float,
@@ -282,7 +283,10 @@ class ProgressMeter(object):
         return '[' + fmt + '/' + fmt.format(num_batches) + ']'
 def adjust_learning_rate(tl,optimizer, epoch, i, args):
     for param_group in optimizer.param_groups:
-        param_group['lr'] = args.lr*(1+ np.cos(np.pi*(epoch*tl+i)/(args.epochs*tl)))/2
+        if args.cos == True:
+            param_group['lr'] = args.lr*(1+ np.cos(np.pi*(epoch*tl+i)/(args.epochs*tl)))/2
+        else:
+            param_group['lr'] = args.lr*(0.1 ** (epoch // 30))
 def accuracy(output, target, topk=(1,)):
     """Computes the accuracy over the k top predictions for the specified values of k"""
     with torch.no_grad():
