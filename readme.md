@@ -1,7 +1,7 @@
 # Filter Grafting for Deep Neural Networks
 ## Introduction
 
-This is the PyTorch implementation of our CVPR 2020 paper "[Filter Grafting for Deep Neural Networks](https://arxiv.org/abs/2001.05868)". 
+This is the PyTorch implementation of our CVPR 2020 paper "[Filter Grafting for Deep Neural Networks](https://openaccess.thecvf.com/content_CVPR_2020/html/Meng_Filter_Grafting_for_Deep_Neural_Networks_CVPR_2020_paper.html)". 
 
 Invalid filters limit the potential of DNNs since they are identified as having little effect on the network. While filter pruning removes these invalid filters for efficiency consideration, Filter Grafting **re-activates** them from an accuracy boosting perspective. The activation is processed by grafting external information (weights) into invalid filters. 
 
