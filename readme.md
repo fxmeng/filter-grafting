@@ -44,8 +44,7 @@ optional arguments:
 ### Execute example
 
 #### Simply run
-shell
-```
+```shell
 cd grafting_cifar
 ./grafting.sh
 ```
