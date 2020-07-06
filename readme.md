@@ -44,7 +44,7 @@ optional arguments:
 ### Execute example
 
 #### Simply run
-
+shell
 ```
 cd grafting_cifar
 ./grafting.sh
@@ -54,14 +54,14 @@ or
 
 #### Two models grafting
 
-```
+```shell
 CUDA_VISIBLE_DEVICES=0 nohup python grafting.py --s checkpoint/grafting_cifar10_resnet32 --cifar 10  --model resnet32 --num 2 --i 1 >checkpoint/grafting_cifar10_resnet32/1.log &
 CUDA_VISIBLE_DEVICES=1 nohup python grafting.py --s checkpoint/grafting_cifar10_resnet32 --cifar 10  --model resnet32 --num 2 --i 2  >checkpoint/grafting_cifar10_resnet32/2.log &
 ```
 
 #### Three models grafting
 
-```
+```shell
 CUDA_VISIBLE_DEVICES=0 nohup python grafting.py --s checkpoint/grafting_cifar10_resnet32 --cifar 10  --model resnet32 --num 3 --i 1 >checkpoint/grafting_cifar10_resnet32/1.log &
 CUDA_VISIBLE_DEVICES=1 nohup python grafting.py --s checkpoint/grafting_cifar10_resnet32 --cifar 10  --model resnet32 --num 3 --i 2 >checkpoint/grafting_cifar10_resnet32/2.log &
 CUDA_VISIBLE_DEVICES=2 nohup python grafting.py --s checkpoint/grafting_cifar10_resnet32 --cifar 10  --model resnet32 --num 3 --i 3 >checkpoint/grafting_cifar10_resnet32/3.log &
@@ -191,7 +191,7 @@ optional arguments:
 
 #### Simply run
 
-```
+```shell
 cd grafting_imagenet
 ./grafting.sh
 ```
@@ -200,7 +200,7 @@ or
 
 #### Two models grafting
 
-```
+```shell
 CUDA_VISIBLE_DEVICES=0 nohup python grafting.py --arch resnet18 --s grafting_imagenet_resnet18 --num 2 --i 1 >checkpoint/grafting_imagenet_resnet18/1.out &
 CUDA_VISIBLE_DEVICES=1 nohup python grafting.py --arch resnet18 --s grafting_imagenet_resnet18 --num 2 --i 2 >checkpoint/grafting_imagenet_resnet18/2.out &
 ```
@@ -209,7 +209,7 @@ CUDA_VISIBLE_DEVICES=1 nohup python grafting.py --arch resnet18 --s grafting_ima
 
 #### Three models grafting
 
-```
+```shell
 CUDA_VISIBLE_DEVICES=0 nohup python grafting.py --arch resnet18 --s grafting_imagenet_resnet18 --num 3 --i 1 >checkpoint/grafting_imagenet_resnet18/1.out &
 CUDA_VISIBLE_DEVICES=1 nohup python grafting.py --arch resnet18 --s grafting_imagenet_resnet18 --num 3 --i 2 >checkpoint/grafting_imagenet_resnet18/2.out &
 CUDA_VISIBLE_DEVICES=2 nohup python grafting.py --arch resnet18 --s grafting_imagenet_resnet18 --num 3 --i 3 >checkpoint/grafting_imagenet_resnet18/3.out &
@@ -231,11 +231,12 @@ CUDA_VISIBLE_DEVICES=2 nohup python grafting.py --arch resnet18 --s grafting_ima
 If you find this code useful, please cite the following paper:
 
 ```
-@article{meng2020filter,
-  title={Filter Grafting for Deep Neural Networks},
-  author={Meng, Fanxu and Cheng, Hao and Li, Ke and Xu, Zhixin and Ji, Rongrong and Sun, Xing and Lu, Gaungming},
-  journal={arXiv preprint arXiv:2001.05868},
-  year={2020}
+@InProceedings{Meng_2020_CVPR,
+author = {Meng, Fanxu and Cheng, Hao and Li, Ke and Xu, Zhixin and Ji, Rongrong and Sun, Xing and Lu, Guangming},
+title = {Filter Grafting for Deep Neural Networks},
+booktitle = {The IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+month = {June},
+year = {2020}
 }
 ```
 
