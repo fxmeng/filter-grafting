@@ -36,7 +36,7 @@ parser.add_argument('--num', default=100, type=int)
 parser.add_argument('--i', default=1, type=int)
 # Increase models diversity
 parser.add_argument('--cos', action="store_true", default=False)
-parser.add_argument('--difflr', action="store_true", default=True)
+parser.add_argument('--difflr', action="store_false", default=True)
 args = parser.parse_args()
 print(args)
 print('Session:%s\tModel:%d\tPID:%d' % (args.s, args.i, os.getpid()))
